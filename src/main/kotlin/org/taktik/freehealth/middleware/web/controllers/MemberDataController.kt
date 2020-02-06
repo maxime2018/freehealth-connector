@@ -75,6 +75,7 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
         @RequestParam(required = false) date: Long?,
         @RequestParam(required = false) endDate: Long?,
         @RequestParam(required = false) hospitalized: Boolean?,
+        @RequestParam(required = false) requestType: String?,
         @RequestBody facets:List<FacetDto>
                      ) : MemberDataResponse {
         val startDate: Instant = date?.let { Instant.ofEpochMilli(it) } ?: LocalDate.now().atStartOfDay(ZoneId.of(mcnTimezone)).toInstant()
@@ -90,6 +91,7 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
                                                ioMembership = null,
                                                startDate = startDate,
                                                endDate = endDate?.let { Instant.ofEpochMilli(it) } ?: ZonedDateTime.ofInstant(startDate, ZoneId.of(mcnTimezone)).truncatedTo(ChronoUnit.DAYS).plusDays(1).toInstant(),
+                                               requestType = requestType ?: "information",
                                                facets = facets.map { mapper.map(it, Facet::class.java) })
     }
 
@@ -105,7 +107,8 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
         @RequestParam(required = false) hcpQuality: String?,
         @RequestParam(required = false) date: Long?,
         @RequestParam(required = false) endDate: Long?,
-        @RequestParam(required = false) hospitalized: Boolean?
+        @RequestParam(required = false) hospitalized: Boolean?,
+        @RequestParam(required = false) requestType: String?
     ) : MemberDataResponse {
         val startDate: Instant = date?.let { Instant.ofEpochMilli(it) } ?: LocalDate.now().atStartOfDay(ZoneId.of(mcnTimezone)).toInstant()
         return memberDataService.getMemberData(keystoreId = keystoreId,
@@ -120,7 +123,9 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
                                                ioMembership = null,
                                                startDate = startDate,
                                                endDate = endDate?.let { Instant.ofEpochMilli(it) } ?: ZonedDateTime.ofInstant(startDate, ZoneId.of(mcnTimezone)).truncatedTo(ChronoUnit.DAYS).plusDays(1).toInstant(),
-                                               hospitalized = hospitalized ?: false)
+                                               hospitalized = hospitalized ?: false,
+                                               requestType = requestType?: "information"
+            )
     }
 
     @PostMapping("/{io}/{ioMembership}", produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
@@ -137,6 +142,7 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
         @RequestParam(required = false) date: Long?,
         @RequestParam(required = false) endDate: Long?,
         @RequestParam(required = false) hospitalized: Boolean?,
+        @RequestParam(required = false) requestType: String?,
         @RequestBody facets:List<FacetDto>
                        ) : MemberDataResponse {
         val startDate: Instant = date?.let { Instant.ofEpochMilli(it) } ?: LocalDate.now().atStartOfDay(ZoneId.of(mcnTimezone)).toInstant()
@@ -152,6 +158,7 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
                                                ioMembership = ioMembership,
                                                startDate = startDate,
                                                endDate = endDate?.let { Instant.ofEpochMilli(it) } ?: ZonedDateTime.ofInstant(startDate, ZoneId.of(mcnTimezone)).truncatedTo(ChronoUnit.DAYS).plusDays(1).toInstant(),
+                                               requestType = requestType?: "information",
                                                facets = facets.map { mapper.map(it, Facet::class.java) })
     }
 
@@ -168,7 +175,8 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
         @RequestParam(required = false) hcpQuality: String?,
         @RequestParam(required = false) date: Long?,
         @RequestParam(required = false) endDate: Long?,
-        @RequestParam(required = false) hospitalized: Boolean?
+        @RequestParam(required = false) hospitalized: Boolean?,
+        @RequestParam(required = false) requestType: String?
     ): MemberDataResponse {
         val startDate: Instant = date?.let { Instant.ofEpochMilli(it) } ?: LocalDate.now().atStartOfDay(ZoneId.of(mcnTimezone)).toInstant()
         return memberDataService.getMemberData(keystoreId = keystoreId,
@@ -183,6 +191,7 @@ class MemberDataController(val memberDataService: MemberDataService, val mapper:
                                                ioMembership = ioMembership,
                                                startDate = startDate,
                                                endDate = endDate?.let { Instant.ofEpochMilli(it) } ?: ZonedDateTime.ofInstant(startDate, ZoneId.of(mcnTimezone)).truncatedTo(ChronoUnit.DAYS).plusDays(1).toInstant(),
-                                               hospitalized = hospitalized ?: false)
+                                               hospitalized = hospitalized ?: false,
+                                               requestType = requestType?: "information")
     }
 }

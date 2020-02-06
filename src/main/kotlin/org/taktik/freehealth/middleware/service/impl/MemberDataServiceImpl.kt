@@ -123,6 +123,7 @@ class MemberDataServiceImpl(val stsService: STSService, keyDepotService: KeyDepo
         startDate: Instant,
         endDate: Instant,
         hospitalized: Boolean?,
+        requestType: String?,
         facets: List<Facet>?
                               ): MemberDataResponse {
         val encryptRequest = true
@@ -183,7 +184,7 @@ class MemberDataServiceImpl(val stsService: STSService, keyDepotService: KeyDepo
                 this.facets.addAll(facets ?: listOf(
                     Facet().apply {
                         id = "urn:be:cin:nippin:insurability"
-                        dimensions.add(Facet.Dimension().apply { id = "requestType"; value = "information" })
+                        dimensions.add(Facet.Dimension().apply { id = "requestType"; value = requestType })
                         dimensions.add(Facet.Dimension().apply {
                             id = "contactType"; value =
                             if (hospitalized == true) "hospitalized" else "other"
