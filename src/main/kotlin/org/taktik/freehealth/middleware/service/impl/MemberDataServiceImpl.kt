@@ -167,7 +167,7 @@ class MemberDataServiceImpl(val stsService: STSService, keyDepotService: KeyDepo
         validateQuality(hcpQuality)
         val samlToken =
             stsService.getSAMLToken(tokenId, keystoreId, passPhrase)
-                ?: throw MissingTokenException("Cannot obtain token for GMD operations")
+                ?: throw MissingTokenException("Cannot obtain token for MDA operations")
 
         val istest = config.getProperty("endpoint.dmg.notification.v1").contains("-acpt")
         val author = makeAuthor(hcpNihii, hcpSsin, hcpName)
@@ -251,7 +251,7 @@ class MemberDataServiceImpl(val stsService: STSService, keyDepotService: KeyDepo
             this.inputReference = inputReference
         }
 
-        // no xades needed for dmg async
+        // no xades needed for mda async
         val post = BuilderFactory.getRequestObjectBuilder("mda")
             .buildPostRequest(ci, SendRequestMapper.mapBlobToCinBlob(blob), null)
         val postResponse = genAsyncService.postRequest(samlToken, post, postHeader)
