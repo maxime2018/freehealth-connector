@@ -266,7 +266,7 @@ class STSServiceImpl(val keystoresMap: IMap<UUID, ByteArray>, val tokensMap: IMa
 
             samlTokenResult
         } catch (e: TechnicalConnectorException) {
-            log.info("STS token request failure: ${e.errorCode} : ${e.message} : ${e.stackTrace}")
+            log.info("STS token request failure: ${e.errorCode} : ${e.message}", e)
             currentToken // FIXME: should throw if no currentToken
         }
     }

@@ -92,7 +92,7 @@ open class EhealthTest {
 
     protected fun registerMmH(restTemplate: TestRestTemplate, port: Int, nihii: String, passPhrase: String): Triple<UUID?, String, String> {
         val keystoreId = uploadKeystore((MyTestsConfiguration::class).java.getResource("$nihii.acc-p12").path, port, restTemplate)
-        val res = restTemplate.exchange("http://localhost:$port/sts/token?isMedicalHouse=true&ssin=$nihii", HttpMethod.GET, HttpEntity<Void>(createHeaders(null, null, keystoreId, null, passPhrase)), SamlTokenResult::class.java, passPhrase)
+        val res = restTemplate.exchange("http://localhost:$port/sts/token/medicalhouse?ssin=$nihii", HttpMethod.GET, HttpEntity<Void>(createHeaders(null, null, keystoreId, null, passPhrase)), SamlTokenResult::class.java, passPhrase)
         val tokenId = res.body?.let { it.tokenId }
         return Triple(keystoreId, tokenId.toString(), passPhrase)
     }
